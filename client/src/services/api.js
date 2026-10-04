@@ -1,4 +1,5 @@
-const API_BASE = 'http://localhost:5000/api';
+
+const API_BASE = 'https://dev-track-xr46.vercel.app/api';
 
 export const fetchTopics = async (track = '') => {
   const url = track ? `${API_BASE}/topics?track=${track}` : `${API_BASE}/topics`;

@@ -14,7 +14,25 @@ const { startJobScheduler } = require('./src/services/jobAggrigator');
 const app = express();
 
 // Middlewares
-app.use(cors());
+
+const allowedOrigins = [
+  'https://dev-track-theta-seven.vercel.app',
+  'http://localhost:3000' // Local testing ke liye
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Mobile apps, Postman ya bina origin wale requests ke liye !origin allow karein
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Blocked by CORS policy'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-sync-secret']
+}));
 app.use(express.json());
 
 connectDB().then(() => {
