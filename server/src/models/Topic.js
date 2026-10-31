@@ -1,40 +1,46 @@
 const mongoose = require('mongoose');
 
-const topicSchema = new mongoose.Schema(
-  {
-    track: {
-      type: String,
-      required: true,
-      enum: ['dsa', 'dev', 'systemDesign', 'coreCs', 'aptitude']
-    },
-    topic: {
-      type: String,
-      required: true
-    },
-    title: {
-      type: String,
-      required: true
-    },
-    difficulty: {
-      type: String,
-      enum: ['Easy', 'Medium', 'Hard'],
-      default: 'Medium'
-    },
-    status: {
-      type: String,
-      enum: ['pending', 'completed'],
-      default: 'pending'
-    },
-    pdfUrl: {
-      type: String,
-      default: null
-    },
-    notes: {
-      type: String,
-      default: ''
-    }
+const TopicSchema = new mongoose.Schema({
+  topic: { 
+    type: String, 
+    required: true 
   },
-  { timestamps: true }
-);
+  track: { 
+    type: String, 
+    required: true,
+    enum: [
+      // Full Stack Tracks
+      'dsa', 
+      'dev', 
+      'systemDesign', 
+      'coreCs', 
+      'aptitude',
+      // Data Analyst Tracks
+      'sql', 
+      'python', 
+      'bi', 
+      'stats'
+    ] 
+  },
+  category: { 
+    type: String 
+  },
+  difficulty: { 
+    type: String, 
+    enum: ['Easy', 'Medium', 'Hard'], 
+    default: 'Medium' 
+  },
+  status: { 
+    type: String, 
+    enum: ['pending', 'completed'], 
+    default: 'pending' 
+  },
+  link: { 
+    type: String 
+  },
+  notes: { 
+    type: String 
+  }
+}, { timestamps: true });
 
-module.exports = mongoose.model('Topic', topicSchema);
+module.exports = mongoose.model('Topic', TopicSchema);

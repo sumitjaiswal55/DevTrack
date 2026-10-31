@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Calendar, CheckCircle2, Circle, Clock, Flame, ChevronRight } from 'lucide-react';
+import { useState } from 'react';
+import { Calendar, CheckCircle2, Circle } from 'lucide-react';
 
 export default function PlannerView({ daysPlan, onToggleTask }) {
   const [selectedDay, setSelectedDay] = useState(1);
