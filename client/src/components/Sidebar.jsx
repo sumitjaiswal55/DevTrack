@@ -8,43 +8,65 @@ import {
   Calculator, 
   Briefcase,
   X,
-  BookOpen
+  BookOpen,
+  Database,
+  BarChart3,
+  LineChart,
+  Calendar
 } from 'lucide-react';
 
-export default function Sidebar({ activeTab, setActiveTab, counts, isOpen, setIsOpen }) {
-  // Sidebar.js ke andar navSections ko aise update karein:
-const navSections = [
-  {
-    heading: "Overview",
-    items: [
-      { id: "dashboard", label: "Dashboard", icon: LayoutDashboard }
-    ]
-  },
-  {
-    heading: "Preparation Tracks",
-    items: [
-      { id: "dsa", label: "DSA Engine", icon: Code2, count: counts.dsa },
-      { id: "dev", label: "Dev & Backend", icon: Layers, count: counts.dev },
-      { id: "systemDesign", label: "System Design", icon: Cpu, count: counts.systemDesign },
-      { id: "coreCs", label: "Core CS Subjects", icon: BookMarked, count: counts.coreCs },
-      { id: "aptitude", label: "Aptitude & Reasoning", icon: Calculator, count: counts.aptitude },
-      { id: "planner", label: "Day-wise Planner", icon: Calculator, count: counts.aptitude }
+export default function Sidebar({ 
+  activeTab, 
+  setActiveTab, 
+  counts = {}, 
+  isOpen, 
+  setIsOpen,
+  userRole = 'FULL_STACK' 
+}) {
+  const isDataAnalyst = userRole === 'DATA_ANALYST';
 
-    ]
-  },
-  {
-    heading: "In-App Study Desk",
-    items: [
-      { id: "pdfViewer", label: "PDF & Notes Desk", icon: BookOpen } // <-- Naya Tab
-    ]
-  },
-  {
-    heading: "Placement Radar",
-    items: [
-      { id: "opportunities", label: "Off-Campus Drives", icon: Briefcase, count: counts.opportunities }
-    ]
-  }
-];
+  // Role ke mutabiq dynamic preparation tracks
+  const dynamicTracks = isDataAnalyst
+    ? [
+        { id: "sql", label: "SQL Query Engine", icon: Database, count: counts.sql },
+        { id: "python", label: "Python & Pandas", icon: Code2, count: counts.python },
+        { id: "bi", label: "Power BI & Tableau", icon: BarChart3, count: counts.bi },
+        { id: "stats", label: "Statistics & EDA", icon: LineChart, count: counts.stats },
+        { id: "planner", label: "Day-wise Planner", icon: Calendar }
+      ]
+    : [
+        { id: "dsa", label: "DSA Engine", icon: Code2, count: counts.dsa },
+        { id: "dev", label: "Dev & Backend", icon: Layers, count: counts.dev },
+        { id: "systemDesign", label: "System Design", icon: Cpu, count: counts.systemDesign },
+        { id: "coreCs", label: "Core CS Subjects", icon: BookMarked, count: counts.coreCs },
+        { id: "aptitude", label: "Aptitude & Reasoning", icon: Calculator, count: counts.aptitude },
+        { id: "planner", label: "Day-wise Planner", icon: Calendar }
+      ];
+
+  const navSections = [
+    {
+      heading: "Overview",
+      items: [
+        { id: "dashboard", label: "Dashboard", icon: LayoutDashboard }
+      ]
+    },
+    {
+      heading: isDataAnalyst ? "Analytics Tracks" : "Engineering Tracks",
+      items: dynamicTracks
+    },
+    {
+      heading: "In-App Study Desk",
+      items: [
+        { id: "pdfViewer", label: "PDF & Notes Desk", icon: BookOpen }
+      ]
+    },
+    {
+      heading: "Placement Radar",
+      items: [
+        { id: "opportunities", label: "Off-Campus Drives", icon: Briefcase, count: counts.opportunities }
+      ]
+    }
+  ];
 
   const handleTabClick = (id) => {
     setActiveTab(id);
@@ -76,11 +98,13 @@ const navSections = [
           <div className="flex items-center justify-between px-2 pb-5 flex-shrink-0">
             <div className="flex items-center gap-2.5">
               <div className="h-8 w-8 rounded-lg bg-blue-600 flex items-center justify-center font-bold text-white text-sm shadow-md shadow-blue-500/20">
-                DT
+                {isDataAnalyst ? 'DA' : 'DT'}
               </div>
               <div>
                 <h1 className="font-bold text-sm tracking-wide text-white">DevTrack OS</h1>
-                <p className="text-[10px] text-slate-400 font-mono">Off-Campus Suite</p>
+                <p className="text-[10px] text-slate-400 font-mono">
+                  {isDataAnalyst ? 'Data Analyst Track' : 'Full Stack Suite'}
+                </p>
               </div>
             </div>
 
@@ -116,7 +140,7 @@ const navSections = [
                         <Icon className="w-4 h-4" />
                         <span>{item.label}</span>
                       </div>
-                      {item.count !== undefined && (
+                      {item.count !== undefined && item.count !== null && (
                         <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800/80 text-slate-400">
                           {item.count}
                         </span>
@@ -129,10 +153,14 @@ const navSections = [
           </nav>
         </div>
 
-        {/* Bottom Profile Footer */}
+        {/* Dynamic Profile Footer */}
         <div className="p-3 rounded-xl bg-[#131B2A] border border-[#1E293B] mt-4 flex-shrink-0">
-          <p className="text-xs font-semibold text-slate-200">Sumit Jaiswal</p>
-          <p className="text-[10px] text-slate-400">Candidate Target: 2027 Placement</p>
+          <p className="text-xs font-semibold text-slate-200">
+            {isDataAnalyst ? 'Candidate Track: Data Analyst' : 'Candidate Track: Full Stack'}
+          </p>
+          <p className="text-[10px] text-slate-400 font-mono mt-0.5">
+            Role: {isDataAnalyst ? 'SQL • BI • Python' : 'DSA • Dev • System Design'}
+          </p>
         </div>
 
       </aside>

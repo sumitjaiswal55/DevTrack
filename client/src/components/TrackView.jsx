@@ -308,7 +308,6 @@ export default function TrackView({ title, description, items, onItemToggle, onA
           </div>
         </div>
       )}
-
     </div>
   );
 }
